@@ -6,18 +6,18 @@ axios.defaults.baseURL = API_URL;
 axios.defaults.withCredentials = true;
 
 export const loginUser = (email, password) =>
-  axios.post(`/auth/login`, { email, password });
+  axios.post(`/api/auth/login`, { email, password });
 
 export const registerUser = (email, name, password) =>
-  axios.post(`/auth/register`, { email, name, password });
+  axios.post(`/api/auth/register`, { email, name, password });
+export const logoutUser = () => axios.get(`/api/auth/logout`);
 
-export const getTestDetails = (testId) => axios.get(`/tests/${testId}`);
+export const getTestDetails = (testId) => axios.get(`/api/tests/${testId}`);
 
-export const startTest = () => axios.get(`/tests/start`);
+export const startTest = () => axios.get(`/api/tests/start`);
 
 export const submitAnswer = (testId, questionId, answer) =>
-  axios.post(`/tests/${testId}/questions/${questionId}/answer`, { answer });
+  axios.post(`/api/tests/${testId}/questions/${questionId}/answer`, { answer });
 
-export const getTestResult = (testId) => axios.get(`/tests/${testId}/result`);
-
-export const logoutUser = () => axios.get(`/auth/logout`);
+export const getTestResult = (testId) =>
+  axios.get(`/api/tests/${testId}/result`);
