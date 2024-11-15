@@ -7,7 +7,8 @@ import {
   Container,
   Typography,
   Link,
-  Box
+  Box,
+  CircularProgress
 } from "@mui/material";
 import { registerUser } from "../../utils/api";
 import { useRouter } from "next/navigation";
@@ -19,6 +20,7 @@ const RegisterPage = () => {
     password: ""
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -28,16 +30,19 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    if (!formData.email || !formData.name || !formData.password) {
+      setError("All fields are required.");
+      return;
+    }
+    setLoading(true);
     try {
-      const response = await registerUser(
-        formData.email,
-        formData.name,
-        formData.password
-      );
-      console.log("Registration successful:", response.data);
+      await registerUser(formData.email, formData.name, formData.password);
       router.push("/login");
     } catch (err) {
-      setError("Registration failed");
+      setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,8 +79,15 @@ const RegisterPage = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        <Button variant="contained" color="primary" fullWidth type="submit">
-          Register
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          type="submit"
+          disabled={loading}
+          startIcon={loading && <CircularProgress size={20} />}
+        >
+          {loading ? "Registering..." : "Register"}
         </Button>
       </form>
       <Box textAlign="center" mt={2}>

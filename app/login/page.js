@@ -7,15 +7,20 @@ import {
   Container,
   Typography,
   Link,
-  Box
+  Box,
+  CircularProgress
 } from "@mui/material";
 import { loginUser } from "../../utils/api";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../store/authSlice";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,12 +29,21 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+
     try {
       const response = await loginUser(formData.email, formData.password);
+      const token = response.data.token;
       console.log("Login successful:", response.data);
+
+      dispatch(setAuth(token));
+
       router.push("/");
     } catch (err) {
-      setError("Login failed", err.message);
+      setError("Login failed. " + (err.response?.data?.message || err.message));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,13 +72,20 @@ const LoginPage = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        <Button variant="contained" color="primary" fullWidth type="submit">
-          Login
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          type="submit"
+          disabled={loading}
+          startIcon={loading && <CircularProgress size={20} />}
+        >
+          {loading ? "Logging in..." : "Login"}
         </Button>
       </form>
       <Box textAlign="center" mt={2}>
         <Typography variant="body2">
-          Don&apos;t forget to log in!
+          Don&apos;t have an account?{" "}
           <Link href="/register" underline="hover" color="primary">
             Register
           </Link>

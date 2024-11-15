@@ -1,18 +1,29 @@
 "use client";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { logout } from "../store/authSlice";
-import { loginUser } from "@/utils/api";
+import { logoutUser } from "@/utils/api";
 
 export default function Navbar() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    loginUser();
-    router.push("/");
+  const handleLogout = async () => {
+    if (!confirm("Are you sure you want to log out?")) return;
+
+    setLoading(true);
+    try {
+      await logoutUser();
+      dispatch(logout());
+      router.push("/");
+    } catch (err) {
+      console.error("Logout failed:", err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,9 +39,12 @@ export default function Navbar() {
           {isAuthenticated && (
             <button
               onClick={handleLogout}
-              className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 transition duration-200"
+              className={`btn btn-logout ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={loading}
             >
-              Logout
+              {loading ? "Logging out..." : "Logout"}
             </button>
           )}
         </div>
