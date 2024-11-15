@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import store from "../store";
 import Navbar from "../components/Navbar";
 import "./globals.css";
-import TestPage from "@/components/TestPage";
 
 export default function RootLayout({ children }) {
   return (

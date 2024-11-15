@@ -64,7 +64,7 @@ const LoginPage = () => {
       </form>
       <Box textAlign="center" mt={2}>
         <Typography variant="body2">
-          Don't have an account?{" "}
+          Don&apos;t forget to log in!
           <Link href="/register" underline="hover" color="primary">
             Register
           </Link>
