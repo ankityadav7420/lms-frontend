@@ -1,39 +1,48 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { getTestDetails, submitAnswer } from "../../../utils/api";
+import { useRouter, useParams } from "next/navigation";
+import { getTestDetails, nextQuestion, submitAnswer } from "../../../utils/api";
 import Question from "../../../components/Question";
 import { Button, Typography, Box, CircularProgress } from "@mui/material";
 
-export default function TestPage({ params }) {
+export default function TestPage() {
   const [question, setQuestion] = useState(null);
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { testId } = params;
+  const params = useParams();
+  const testId = params.testId;
 
   useEffect(() => {
-    const fetchTestDetails = async () => {
+    const fetchInitialQuestion = async () => {
       try {
-        const initialQuestion = await getTestDetails(testId);
-        setQuestion(initialQuestion);
+        const response = await getTestDetails(testId);
+
+        setQuestion(response.data.question);
+      } catch (error) {
+        console.error("Error fetching initial question:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchTestDetails();
+
+    if (testId) fetchInitialQuestion();
   }, [testId]);
 
   const handleSubmitAnswer = async () => {
     setLoading(true);
     try {
-      const nextQuestion = await submitAnswer(testId, question.id, answer);
-      if (nextQuestion) {
-        setQuestion(nextQuestion);
-        setAnswer("");
-      } else {
+      const response = await submitAnswer(testId, question.id, answer);
+      if (response.data.message === "Test completed") {
         router.push(`/test/${testId}/result`);
+      } else {
+        const nextQuestion = await nextQuestion(testId);
+        setQuestion(nextQuestion.data.question);
+        setAnswer("");
       }
+    } catch (error) {
+      console.error("Error submitting answer:", error);
     } finally {
       setLoading(false);
     }

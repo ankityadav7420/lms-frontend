@@ -28,9 +28,14 @@ const HomePage = () => {
   const handleStartTest = async () => {
     try {
       setLoading(true);
+
+      // Start the test and get the test ID from the response
       const response = await startTest();
-      setTestData(response.data);
-      router.push("/test");
+      const testId = response?.data?.testId; // Assuming `testId` is in the response
+      setTestData(response?.data);
+
+      // Navigate to the dynamic route with the test ID
+      router.push(`/test/${testId}`);
     } catch (error) {
       console.error("Error starting test:", error);
     } finally {

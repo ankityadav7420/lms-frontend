@@ -14,10 +14,12 @@ export const logoutUser = () => axios.get(`/api/auth/logout`);
 
 export const getTestDetails = (testId) => axios.get(`/api/tests/${testId}`);
 
-export const startTest = () => axios.get(`/api/tests/start`);
+export const startTest = () => axios.post(`/api/tests/start`);
+export const nextQuestion = (testId) =>
+  axios.post(`/api/tests/${testId}/questions`);
 
-export const submitAnswer = (testId, questionId, answer) =>
-  axios.post(`/api/tests/${testId}/questions/${questionId}/answer`, { answer });
+export const submitAnswer = (testId, answer) =>
+  axios.post(`/api/tests/${testId}/answer`, { answer });
 
 export const getTestResult = (testId) =>
   axios.get(`/api/tests/${testId}/result`);

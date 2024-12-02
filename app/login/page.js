@@ -14,6 +14,7 @@ import { loginUser } from "../../utils/api";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/authSlice";
+import Cookies from "js-cookie";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -33,11 +34,11 @@ const LoginPage = () => {
     setError("");
 
     try {
+      // Call the login API
       const response = await loginUser(formData.email, formData.password);
-      const token = response.data.token;
-      console.log("Login successful:", response.data);
 
-      dispatch(setAuth(token));
+      dispatch(setAuth(true)); // Use 'true' for authentication state
+      console.log("Login successful:");
 
       router.push("/");
     } catch (err) {
