@@ -63,10 +63,10 @@ export default function TestResultPage() {
       </Box>
     );
   }
+  const attemptedQuestions = test?.attemptedQuestions ?? 0;
 
   const totalQuestions = test?.totalQuestions || 0;
-  const answeredCount = test?.questions?.length || 0;
-  const remainingCount = Math.max(totalQuestions - answeredCount, 0);
+  const remainingCount = Math.max(totalQuestions - attemptedQuestions, 0);
   const score = test?.score ?? 0;
 
   return (
@@ -91,7 +91,7 @@ export default function TestResultPage() {
           <Box textAlign="center" m={1}>
             <Typography variant="h6">Attempted</Typography>
             <Typography variant="h5" color="primary">
-              {answeredCount}
+              {attemptedQuestions}
             </Typography>
           </Box>
           <Box textAlign="center" m={1}>

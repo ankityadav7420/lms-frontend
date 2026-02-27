@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 const clientAuthCookie = Cookies.get("clientAuth");
 
 const initialState = {
-  isAuthenticated: clientAuthCookie === "true"
+  isAuthenticated: false
 };
 
 const authSlice = createSlice({
