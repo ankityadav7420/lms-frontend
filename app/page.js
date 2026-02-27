@@ -24,6 +24,7 @@ const HomePage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [testData, setTestData] = useState(null);
+  const currentYear = new Date().getFullYear();
 
   const handleStartTest = async () => {
     try {
@@ -181,8 +182,10 @@ const HomePage = () => {
         borderColor="grey.300"
       >
         <Typography variant="body2">
-          © 2024 LMS Portal | <a href="/terms">Terms</a> |{" "}
-          <a href="/privacy">Privacy</a> | <a href="/contact">Contact Us</a>
+          © 2024{currentYear > 2024 && ` - ${currentYear}`} LMS Portal |{" "}
+          <a href="/terms">Terms</a> |{" "}
+          <a href="/privacy">Privacy</a> |{" "}
+          <a href="/contact">Contact Us</a>
         </Typography>
       </Box>
     </Container>
