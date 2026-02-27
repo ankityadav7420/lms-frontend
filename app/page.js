@@ -29,13 +29,16 @@ const HomePage = () => {
     try {
       setLoading(true);
 
-      // Start the test and get the test ID from the response
+      // Start the test and get identifiers from the standardized API response
       const response = await startTest();
-      const testId = response?.data?.testId; // Assuming `testId` is in the response
-      setTestData(response?.data);
+      const payload = response?.data?.data;
+      const testId = payload?.testId;
+      const uniqueURL = payload?.uniqueURL;
+      console.log("Started test with data:", response?.data, payload);
+      setTestData(payload);
 
-      // Navigate to the dynamic route with the test ID
-      router.push(`/test/${testId}`);
+      // Navigate to the dynamic route with the unique URL
+      router.push(`/test/${uniqueURL}`);
     } catch (error) {
       console.error("Error starting test:", error);
     } finally {

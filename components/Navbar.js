@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { logout } from "../store/authSlice";
 import { logoutUser } from "@/utils/api";
 
@@ -9,6 +9,7 @@ export default function Navbar() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
@@ -26,12 +27,21 @@ export default function Navbar() {
     }
   };
 
+  const handleHomeClick = () => {
+    // Block navigating home while user is in the middle of a test
+    if (pathname.startsWith("/test/")) {
+      alert("You cannot leave the test until you finish it.");
+      return;
+    }
+    router.push("/");
+  };
+
   return (
     <nav className="bg-blue-600 p-4 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
         <h1
           className="text-white font-bold text-xl cursor-pointer"
-          onClick={() => router.push("/")}
+          onClick={handleHomeClick}
         >
           LMS Home
         </h1>

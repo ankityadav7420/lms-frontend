@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-const tokenFromCookie = Cookies.get("token");
+
+// This cookie is set by the backend on successful login (non-HTTP-only)
+const clientAuthCookie = Cookies.get("clientAuth");
+
 const initialState = {
-  isAuthenticated: !!tokenFromCookie,
-  token: tokenFromCookie || null
+  isAuthenticated: clientAuthCookie === "true"
 };
 
 const authSlice = createSlice({
