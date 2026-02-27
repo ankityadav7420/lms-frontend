@@ -122,6 +122,15 @@ const HomePage = () => {
               Access a variety of courses in different fields, designed by
               experts.
             </Typography>
+            <Box mt={2}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => router.push("/courses")}
+              >
+                Explore Courses
+              </Button>
+            </Box>
           </Grid>
           <Grid item xs={12} md={4}>
             <AssessmentIcon color="primary" style={{ fontSize: 50 }} />
@@ -130,6 +139,18 @@ const HomePage = () => {
               Challenge yourself with adaptive tests that match your learning
               pace.
             </Typography>
+            {/* {isAuthenticated && (
+              <Box mt={2}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleStartTest}
+                  disabled={loading}
+                >
+                  Start Adaptive Test
+                </Button>
+              </Box>
+            )} */}
           </Grid>
           <Grid item xs={12} md={4}>
             <PersonIcon color="primary" style={{ fontSize: 50 }} />
@@ -137,6 +158,17 @@ const HomePage = () => {
             <Typography color="textSecondary">
               Create your profile to track progress, scores, and achievements.
             </Typography>
+            {isAuthenticated && (
+              <Box mt={2}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => router.push("/profile")}
+                >
+                  View Profile
+                </Button>
+              </Box>
+            )}
           </Grid>
         </Grid>
       </Box>

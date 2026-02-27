@@ -25,3 +25,9 @@ export const submitAnswer = (testId, questionId, answer) =>
 // Fetch test details by test ID (for internal/admin use)
 export const getTestResult = (testId) =>
   axios.get(`/api/tests/${testId}/result`);
+
+// Courses & profile
+export const getCourses = () => axios.get(`/api/courses`);
+export const getCourseById = (id) => axios.get(`/api/courses/${id}`);
+export const getProfile = () => axios.get(`/api/courses/me/profile`);
+export const getCurrentUser = () => axios.get(`/api/users/me`);
