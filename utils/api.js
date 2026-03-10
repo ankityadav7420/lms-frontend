@@ -10,7 +10,7 @@ export const loginUser = (email, password) =>
 
 export const registerUser = (email, name, password) =>
   axios.post(`/api/auth/register`, { email, name, password });
-export const logoutUser = () => axios.get(`/api/auth/logout`);
+export const logoutUser = () => axios.post(`/api/auth/logout`);
 
 // Fetch test details by unique URL (used in the public test link)
 export const getTestDetails = (uniqueURL) =>
